@@ -16,7 +16,7 @@ if __name__ == '__main__':
             if user_minutes not in accepted_lengths:
                 raise ValueError
             rm = RoutineManager(email=_email, password=_password, minutes=user_minutes)
-            print(f'\nRoutine: {rm.routine}\nOpening TRS Daily Maintenance ...\n')
+            print(f'\nRoutine: {rm.random_routine}\nOpening TRS Daily Maintenance ...\n')
             rm.open_daily_maintenance_page()
             break
         except ValueError:

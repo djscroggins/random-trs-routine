@@ -16,7 +16,7 @@ class RoutineManager:
         self._routine_map = self._generate_routine_map()
 
     @property
-    def routine(self):
+    def random_routine(self):
         routines = self._routine_map.get(self._minutes)
         return random.choice(routines)
 
