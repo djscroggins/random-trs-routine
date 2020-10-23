@@ -1,26 +1,36 @@
 import random
 import subprocess
 
+from bs4 import BeautifulSoup
+
+from raw_html import html
+
 
 class RoutineManager:
     def __init__(self, minutes: int):
         self._minutes = minutes
         self._daily_maintenance_url = 'https://members.thereadystate.com/daily-maintenance/'
-        self._routine_map = {
-            10: ['Elbow Grease', 'Thompson', 'Hawk', 'Gorbachev', 'Zoom', 'Cerberus', 'Kevin Hart', 'Madden', 'Irving',
-                 'Low Back Bake Out', 'Margaret', 'Consistent vs. Heroic'],
-            20: ['Trifecta', 'Ruth', 'Emerson', 'Chadwick', 'GZA', 'Good Trouble', 'Rusty Hinges', 'Desk Jockey',
-                 'Atreides',
-                 'Derek Jeter', 'Amelia', 'Kardashian'],
-            30: ['EVH', 'Dick Dale', 'Rusch Hour', 'San Dimas', 'Orlando', 'Mamba', 'Talent', 'Lombardi', 'Jerry Rice',
-                 'Hebe',
-                 'Text Neck Be Gone', 'The Rock']
-        }
+        self._html = html
+        self._routine_map = self._generate_routine_map()
 
     @property
     def routine(self):
         routines = self._routine_map.get(self._minutes)
         return random.choice(routines)
+
+    def _generate_routine_map(self):
+        soup = BeautifulSoup(self._html, 'html.parser')
+        sections = soup.find_all('section', {'class': 'has-parallax'})[1:]
+        _routine_map = {}
+
+        for i, section in enumerate(sections):
+            routine_length = (i + 1) * 10
+            _routine_map[routine_length] = []
+            a_tags = section.find_all('a', {'style': 'color:#000'})
+            for a_tag in a_tags:
+                _routine_map.get(routine_length).append(a_tag.text)
+
+        return _routine_map
 
     def open_daily_maintenance_page(self):
         subprocess.run(['open', f'{self._daily_maintenance_url}'])
