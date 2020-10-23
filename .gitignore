@@ -1,4 +1,6 @@
 .idea/**
+raw_html.py
+test_html_parsing.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
