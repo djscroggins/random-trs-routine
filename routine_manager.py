@@ -6,10 +6,11 @@ from bs4 import BeautifulSoup
 
 
 class RoutineManager:
-    def __init__(self, email: str, password: str, minutes: int) -> None:
+    def __init__(self, email: str, password: str, minutes: int, open_site: bool = True) -> None:
         self._email = email
         self._password = password
         self._minutes = minutes
+        self._open_site = open_site
         self._login_url = 'https://members.thereadystate.com/wp-login.php'
         self._daily_maintenance_url = 'https://members.thereadystate.com/daily-maintenance/'
         self._html = self._get_raw_html()
@@ -42,4 +43,6 @@ class RoutineManager:
         return _routine_map
 
     def open_daily_maintenance_page(self) -> None:
-        subprocess.run(['open', f'{self._daily_maintenance_url}'])
+        if self._open_site:
+            print('Opening TRS Daily Maintenance ...\n')
+            subprocess.run(['open', f'{self._daily_maintenance_url}'])
