@@ -13,6 +13,7 @@ to construct a list of available maintenance routines, randomly selects one for 
 
 - A Python interpreter (I used 3.8 but should play nicely with most recent versions)
 - Login info for your Ready State account
+- Subprocess for opening website is OSX specific for now
 
 # Installation and Setup
 
