@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 
 
 class RoutineManager:
-    def __init__(self, email: str, password: str, minutes: int):
+    def __init__(self, email: str, password: str, minutes: int) -> None:
         self._email = email
         self._password = password
         self._minutes = minutes
@@ -16,18 +16,18 @@ class RoutineManager:
         self._routine_map = self._generate_routine_map()
 
     @property
-    def random_routine(self):
+    def random_routine(self) -> str:
         routines = self._routine_map.get(self._minutes)
         return random.choice(routines)
 
-    def _get_raw_html(self):
+    def _get_raw_html(self) -> str:
         with Session() as session:
             # TODO: Add handling for bad POST
             post = session.post(self._login_url, data={'log': self._email, 'pwd': self._password})
             r = session.get(self._daily_maintenance_url)
         return r.text
 
-    def _generate_routine_map(self):
+    def _generate_routine_map(self) -> dict:
         soup = BeautifulSoup(self._html, 'html.parser')
         sections = soup.find_all('section', {'class': 'has-parallax'})[1:]
         _routine_map = {}
@@ -41,5 +41,5 @@ class RoutineManager:
 
         return _routine_map
 
-    def open_daily_maintenance_page(self):
+    def open_daily_maintenance_page(self) -> None:
         subprocess.run(['open', f'{self._daily_maintenance_url}'])
