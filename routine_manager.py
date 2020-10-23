@@ -22,6 +22,7 @@ class RoutineManager:
 
     def _get_raw_html(self):
         with Session() as session:
+            # TODO: Add handling for bad POST
             post = session.post(self._login_url, data={'log': self._email, 'pwd': self._password})
             r = session.get(self._daily_maintenance_url)
         return r.text
